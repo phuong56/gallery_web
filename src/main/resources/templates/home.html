@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Image Gallery</title>
+	<style>
+		/* Header Styles */
+		header {
+			background: url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zeri_0.jpg') no-repeat center center;
+			background-size: cover;
+			padding: 15px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		/* Dropdown Menu Styles */
+		nav ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+		}
+
+		nav ul li {
+			margin-right: 20px;
+			position: relative;
+		}
+
+		nav ul li a {
+			text-decoration: none;
+			color: #fff;
+			font-weight: bold;
+			transition: color 0.3s;
+		}
+
+		nav ul li a:hover {
+			color: #ffd700;
+		}
+
+		.dropdown {
+			display: none;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			background: #333;
+			padding: 10px;
+		}
+
+		.dropdown li {
+			margin: 5px 0;
+		}
+
+		.dropdown li a {
+			color: #fff;
+		}
+
+		.dropdown li a:hover {
+			color: #ffd700;
+		}
+
+		nav ul li:hover .dropdown {
+			display: block;
+		}
+
+		/* Folder Navigation Styles */
+		.folder-navigation {
+			margin-top: 20px;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+		.folder-container {
+			margin-right: 10px;
+			margin-bottom: 10px;
+		}
+
+		.folder-container a {
+			text-decoration: none;
+			color: #000;
+			font-weight: bold;
+			display: inline-block;
+			border: 3px solid #000;
+			padding: 10px 15px;
+			border-radius: 5px;
+			transition: background-color 0.3s, color 0.3s;
+		}
+
+		.folder-container a:hover {
+			background-color: #000;
+			color: #fff;
+		}
+
+		.folder-container button {
+			border: none;
+			background-color: transparent;
+			cursor: pointer;
+			color: #d9534f;
+			margin-top: 5px;
+			font-weight: bold;
+			transition: color 0.3s;
+		}
+
+		.folder-container button:hover {
+			color: #c9302c;
+		}
+
+		.folder-navigation span {
+			color: #000;
+			margin-right: 10px;
+		}
+
+		/* Image Grid Styles */
+		.image-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+			gap: 10px;
+		}
+
+		.image-grid img {
+			width: 100%;
+			height: auto;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			overflow: hidden;
+			cursor: pointer;
+			transition: transform 0.2s;
+		}
+
+		.image-grid img:hover {
+			transform: scale(1.1);
+		}
+
+		@media (max-width: 768px) {
+			.image-grid {
+				grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+			}
+		}
+
+		/* Fullscreen Styles */
+		.fullscreen {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.8);
+			display: none;
+			align-items: center;
+			justify-content: center;
+			z-index: 999;
+		}
+
+		.fullscreen img {
+			max-width: 70%;
+			max-height: 70%;
+			border-radius: 5px;
+		}
+
+		.fullscreen .close-button {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			background: rgba(0, 0, 0, 0.5);
+			color: #fff;
+			padding: 5px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		.logout-btn {
+			font-family: Hack, monospace;
+			background: #d3d3d3;
+			color: #2c2c2c;
+			cursor: pointer;
+			font-size: 2em;
+			padding: 0.5rem 1rem;
+			border: 0;
+			transition: all 0.5s;
+			border-radius: 10px;
+			width: auto;
+			position: fixed;
+			top: 10px;
+			right: 10px;
+
+			&::after {
+				content: "\f2f5";
+				font-family: "Font Awesome 5 Pro";
+				font-weight: 400;
+				position: absolute;
+				left: 80%;
+				top: 54%;
+				right: 0;
+				bottom: 0;
+				opacity: 0;
+				transform: translate(-50%, -50%);
+
+			}
+
+			&:hover {
+				background: #2b2bff;
+				transition: all 0.5s;
+				border-radius: 10px;
+				box-shadow: 0px 6px 15px #0000ff61;
+				padding: 0.5rem 1.5rem;
+				color: #ffffff;
+
+			}
+		}
+
+		h1 {
+			font-family: 'Arial', sans-serif;
+			font-size: 3em;
+			color: #333;
+			text-align: center;
+			text-transform: uppercase;
+			margin-top: 20px;
+			/* Add any additional styles to enhance the visual appeal */
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<img src="logo.png" alt="Image Gallery Logo" width="100" height="100">
+		<h1>Image Gallery</h1>
+		<nav>
+			<ul>
+				<li><a href="/home">Home</a></li>
+				<li><a href="/upload">Upload Images</a></li>
+				<li>
+					<a href="#">More</a>
+					<ul class="dropdown">
+						<li><a href="/about">About</a></li>
+						<li><a href="/contact">Contact</a></li>
+						<!-- Add more links as needed -->
+					</ul>
+				</li>
+				<li class="logout-btn" onclick="logout()">Logout</li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="folder-navigation">
+		<span>Folders: </span>
+		<div th:each="folder : ${folders}">
+			<div class="folder-container" th:attr="data-folder-id=${folder.id}">
+				<a th:href="@{'/home?folder=' + ${folder.name}}" th:text="${folder.name}"></a>
+				<button onclick="deleteFolder(this)">Delete</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="image-grid">
+		<div th:each="image : ${images}">
+			<div class="image-container" th:attr="data-image-id=${image.id}">
+				<img th:src="@{'/images/' + ${image.name}}" alt="Uploaded Image" onclick="openFullscreen(this)">
+				<div class="action-buttons">
+					<button onclick="deleteImage(this)">Delete1</button>
+					<button class="favorite" onclick="toggleFavorite(this)">Favorite</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="fullscreen" onclick="closeFullscreen()">
+		<img id="fullscreen-img">
+		<button class="close-button" onclick="closeFullscreen()">Close</button>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var logoutButton = document.querySelector('.logout-btn');
+
+			if (logoutButton) {
+				logoutButton.addEventListener('click', function () {
+					// Redirect to the login page when the logout button is clicked
+					window.location.href = '/login';
+				});
+			}
+		});
+
+		function deleteFolder(button) {
+			var folderContainer = button.closest('.folder-container');
+			var folderId = folderContainer.getAttribute('data-folder-id');
+			console.log("Deleted folder with id: " + folderId);
+			var xhr = new XMLHttpRequest();
+			xhr.open("DELETE", "/home/folder/" + folderId, true);
+			xhr.send();
+			folderContainer.remove();
+		}
+
+		function deleteImage(button) {
+			var imageContainer = button.closest('.image-container');
+			var imageId = imageContainer.getAttribute('data-image-id');
+			console.log("Deleted image with id: " + imageId);
+			var xhr = new XMLHttpRequest();
+			xhr.open("DELETE", "/home/" + imageId, true);
+			xhr.send();
+			imageContainer.remove();
+		}
+
+		function openFullscreen(element) {
+			var imgSrc = element.src;
+			document.getElementById('fullscreen-img').src = imgSrc;
+			document.querySelector('.fullscreen').style.display = 'flex';
+		}
+
+		function closeFullscreen() {
+			document.querySelector('.fullscreen').style.display = 'none';
+		}
+
+		function toggleFavorite(button) {
+			var imageContainer = button.closest('.image-container');
+			var imageId = imageContainer.getAttribute('data-image-id');
+			console.log("Toggled favorite for image with id: " + imageId);
+			var xhr = new XMLHttpRequest();
+			// Update the endpoint to include the leading /
+			xhr.open("PUT", "/home/favorite/" + imageId, true);
+			xhr.send();
+		}
+
+	</script>
+</body>
+
+</html>

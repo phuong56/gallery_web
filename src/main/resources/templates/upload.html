@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+		body {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+			background-image: url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zeri_0.jpg');
+			background-size: cover;
+			background-position: center;
+		}
+
+		form {
+			max-width: 500px;
+			padding: 20px;
+			background-color: #fff;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		}
+	</style>
+</head>
+
+<body>
+	<form method="post" action="/upload" enctype="multipart/form-data">
+		<input type="file" name="file" /><br />
+		<input type="text" name="nameFolder" placeholder="name folder"> <br /> <br />
+		<input type="submit" value="Upload" />
+	</form>
+</body>
+
+</html>
